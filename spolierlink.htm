@@ -74,7 +74,7 @@ return input.replace(commentsAndPhpTags, '')
 window.onload = function(){
 var btncreate = document.querySelector('.js-create');
 if(getParameterByName("s")){
-if(getParameterByName("s").length>30){
+if(getParameterByName("s").length<31){
 
 var subject = removeTags(getParameterByName("s"));
 
