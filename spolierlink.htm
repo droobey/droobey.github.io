@@ -117,7 +117,7 @@ document.getElementById("genlink").href=link
 
 document.getElementsByClassName("fb-share-button")[0].style="";
 document.getElementsByClassName("fb-share-button")[0].dataset.href=link;
-document.getElementsByClassName("fb-xfbml-parse-ignore")[0].href="https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(location.protocol + '//' + location.host + location.pathname+link)+"&src=sdkpreparse";
+document.getElementsByClassName("fb-xfbml-parse-ignore")[0].href="https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(location.protocol + '//' + location.host + location.pathname+link)+"&caption=SpolierLink&description=Spoliers for "+subject+" inside";
 document.getElementById("genlink").style="";
 });
 
