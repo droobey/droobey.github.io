@@ -1,0 +1,162 @@
+<html><head>
+
+<meta property="og:description" content="Hidden spoliers inside"/>
+
+
+  <style type="text/css">
+    
+  </style>
+
+  <title>SpolierLink</title>
+
+<script type="text/javascript">
+function getParameterByName(name, url) {
+    if (!url) {
+      url = window.location.href;
+    }
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+function fadeOut(el){
+  el.style.opacity = 1;
+
+  (function fade() {
+    if ((el.style.opacity -= .1) < 0) {
+      el.style.display = "none";
+    } else {
+      requestAnimationFrame(fade);
+    }
+  })();
+}
+
+// fade in
+
+function fadeIn(el, display){
+  el.style.opacity = 0;
+  el.style.display = display || "block";
+
+  (function fade() {
+    var val = parseFloat(el.style.opacity);
+    if (!((val += .1) > 1)) {
+      el.style.opacity = val;
+      requestAnimationFrame(fade);
+    }
+  })();
+}
+
+
+
+function removeTags(s){
+    var rex = /(<([^>]+)>)|(&lt;([^>]+)&gt;)/ig;
+    return s.replace(rex , "");
+
+}
+
+
+function strip_tags(input, allowed) {
+allowed= '<b><i><u><p><ol><ul><a>'
+allowed = (((allowed || '') + '')
+.toLowerCase()
+.match(/<[a-z][a-z0-9]*>/g) || [])
+.join(''); // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
+var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi,
+commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
+return input.replace(commentsAndPhpTags, '')
+.replace(tags, function($0, $1) {
+  return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
+});
+}
+window.onload = function(){
+var btncreate = document.querySelector('.js-create');
+if(getParameterByName("s")){
+if(getParameterByName("s").length>30){
+
+var subject = removeTags(getParameterByName("s"));
+
+document.querySelector('meta[property="og:description"]').setAttribute("content", "Spoliers for "+subject+" inside");
+var spolier = strip_tags(decodeURIComponent(  atob(getParameterByName("msg"))  ));
+document.title="SPOLIER: "+removeTags(getParameterByName("s"))
+document.getElementById("spolier").innerHTML=spolier;
+
+
+var btn = document.querySelector('.js-btn');
+
+var el = document.querySelector('.js-fade');
+
+btn.addEventListener('click', function(e){
+  if(el.classList.contains('is-hidden')){
+    fadeIn(el);
+	el.className="js-fade"
+  }
+  else {
+    fadeOut(el);
+	el.className="js-fade is-hidden"
+  }
+});
+
+}else{//msg an d subject set
+document.getElementById("show").innerHTML="";
+
+}
+
+}else{//msg an d subject set
+document.getElementById("show").innerHTML="";
+
+}
+
+btncreate.addEventListener('click', function(e){
+var subject = encodeURIComponent(removeTags(  document.getElementById("subject").value ));
+var msg = encodeURIComponent(btoa(strip_tags(  document.getElementById("msg").value,"")));
+var link="?s="+subject+"&msg="+msg;
+document.getElementById("genlink").href=link
+
+document.getElementsByClassName("fb-share-button")[0].style="";
+document.getElementsByClassName("fb-share-button")[0].dataset.href=link;
+document.getElementsByClassName("fb-xfbml-parse-ignore")[0].href="https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(location.protocol + '//' + location.host + location.pathname+link)+"&src=sdkpreparse";
+document.getElementById("genlink").style="";
+});
+
+
+
+
+};
+</script>
+
+  
+</head>
+
+<body>
+
+
+  <center>
+  <div id="show">
+    <h1>
+Spolier Alert
+</h1>
+    <p>
+      This spolier regards:
+      <br/><b><script>document.write(removeTags(getParameterByName("s")));</script></b><br/>
+	  <a href="#" class="js-btn">REVEAL</a>
+    </p><br/>
+	<p id="spolier" class='js-fade is-hidden' style="display: none;"></p>
+	</div>
+	<h2 id="create">Create a Spolier Link</h2>
+	Subject: <input type="text" maxlength="30" size="38" id="subject"/><br/>
+	Message: <textarea rows="8" cols="40" id="msg"></textarea><br/>
+	<input type="button" id="generate" class="js-create" value="Generate"/><br/>
+	<div style="display: none;" class="fb-share-button" data-href="https://developers.facebook.com/URLISHERE" data-layout="button" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=htt	ps%3A%2F%2Fdevelopers.facebook.com%2FURLISHERE&amp;src=sdkpreparse">Share on FB</a></div><br/>
+	<a id="genlink" style="display: none;">Generated Link</a>
+  </center>
+
+
+  
+
+
+
+
+</body></html>
